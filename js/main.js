@@ -10,7 +10,6 @@ const createRandomNumber = (min,max) => {
   return function (){
     let randomNumber = getRandomInteger(min,max);
     if (previousValues.length >= (max - min + 1)){
-      console.error('Перебраны все числа из диапазона от' + min + ' до' + max );
       return null;
     }
     while (previousValues.includes(randomNumber)){
@@ -40,7 +39,7 @@ const comment = () => {
 
   const randomComment = {
     id: generateCommentId(),
-    avatar: 'img/avatar-' + generateAvatarUrl + '.svg',
+    avatar: `img/avatar-${generateAvatarUrl}.svg`,
     message: message[generateMessageIndex],
     name: commentNames[generateNameIndex],
   };
@@ -61,7 +60,7 @@ const picture = () => {
 
   const randomPicture = {
     id: generatePhotoId(),
-    url: 'photos/' + generatePictureUrl() + '.jpg',
+    url: `photos/${generatePictureUrl()}.jpg`,
     description: 'Любимая фотография',
     likes: numberOfLikes,
     comments: commentsArray,
@@ -73,5 +72,3 @@ const pictures = [];
 for (let i = 0; i < 25; i++){
   pictures.push(picture());
 }
-
-
