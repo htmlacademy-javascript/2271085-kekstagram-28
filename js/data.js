@@ -5,7 +5,7 @@ const PICTURE_COUNT = 25;
 const AVATAR_COUNT = 6;
 const LIKE_MIN_COUNT = 15;
 const LIKE_MAX_COUNT = 200;
-const COMMENT_COUNT = 3;
+const COMMENT_COUNT = 30;
 const MESSAGE = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -27,7 +27,7 @@ const createComment = (index) => {
   return randomComment;
 };
 
-const getComments = () => Array.from({length:COMMENT_COUNT},(_, index) =>
+const getComments = () => Array.from({length:getRandomInteger(0,COMMENT_COUNT)},(_, index) =>
   createComment(index + 1)
 );
 
