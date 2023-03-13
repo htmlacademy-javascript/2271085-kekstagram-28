@@ -1,4 +1,3 @@
-import {getPictures} from './data.js';
-import './miniature.js';
+import {thumbnailRender} from './miniature.js';
 
-getPictures();
+thumbnailRender();

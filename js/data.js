@@ -14,6 +14,14 @@ const MESSAGE = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 const COMMENT_NAMES = ['Птолемей','Аристарх','Евстафий','Прохор','Василина','Лорана','Дженерика','Серафим','Прокл'];
+const DESCRIPTIONS = [
+  'Любимая фотография',
+  'А вам так слабо?',
+  'Если руки золотые, то не важно, откуда они растут',
+  'Одна голова - хорошо, а две смешнее',
+  'У каждого свои слабости',
+  'Смотрите, как надо!',
+  'Хотели как лучше, а получилось как всегда'];
 
 const createComment = (index) => {
 
@@ -36,7 +44,7 @@ const createPicture = (index) => {
   const randomPicture = {
     id: index,
     url: `photos/${index}.jpg`,
-    description: 'Любимая фотография',
+    description: DESCRIPTIONS[getRandomInteger(0,6)],
     likes: getRandomInteger(LIKE_MIN_COUNT,LIKE_MAX_COUNT),
     comments: getComments(),
   };
@@ -47,7 +55,5 @@ const getPictures = () =>
   Array.from({length: PICTURE_COUNT}, (_,pictureIndex) =>
     createPicture(pictureIndex + 1)
   );
-
-getPictures();
 
 export {getPictures};
