@@ -5,7 +5,7 @@ const PICTURE_COUNT = 25;
 const AVATAR_COUNT = 6;
 const LIKE_MIN_COUNT = 15;
 const LIKE_MAX_COUNT = 200;
-const COMMENT_COUNT = 20;
+const COMMENT_COUNT = 30;
 const MESSAGE = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -14,6 +14,14 @@ const MESSAGE = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 const COMMENT_NAMES = ['Птолемей','Аристарх','Евстафий','Прохор','Василина','Лорана','Дженерика','Серафим','Прокл'];
+const DESCRIPTIONS = [
+  'Любимая фотография',
+  'А вам так слабо?',
+  'Если руки золотые, то не важно, откуда они растут',
+  'Одна голова - хорошо, а две смешнее',
+  'У каждого свои слабости',
+  'Смотрите, как надо!',
+  'Хотели как лучше, а получилось как всегда'];
 
 const createComment = (index) => {
 
@@ -27,7 +35,7 @@ const createComment = (index) => {
   return randomComment;
 };
 
-const getComments = () => Array.from({length:COMMENT_COUNT},(_, index) =>
+const getComments = () => Array.from({length:getRandomInteger(0,COMMENT_COUNT)},(_, index) =>
   createComment(index + 1)
 );
 
@@ -36,7 +44,7 @@ const createPicture = (index) => {
   const randomPicture = {
     id: index,
     url: `photos/${index}.jpg`,
-    description: 'Любимая фотография',
+    description: DESCRIPTIONS[getRandomInteger(0,6)],
     likes: getRandomInteger(LIKE_MIN_COUNT,LIKE_MAX_COUNT),
     comments: getComments(),
   };
@@ -47,7 +55,5 @@ const getPictures = () =>
   Array.from({length: PICTURE_COUNT}, (_,pictureIndex) =>
     createPicture(pictureIndex + 1)
   );
-
-getPictures();
 
 export {getPictures};
