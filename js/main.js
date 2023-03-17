@@ -1,3 +1,1 @@
-import {thumbnailRender} from './miniature.js';
-
-thumbnailRender();
+import './picture.js';

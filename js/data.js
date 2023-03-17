@@ -25,7 +25,7 @@ const DESCRIPTIONS = [
 
 const createComment = (index) => {
 
-  const generateAvatarIndex = createRandomNumber(0,AVATAR_COUNT);
+  const generateAvatarIndex = createRandomNumber(1,AVATAR_COUNT);
   const randomComment = {
     id: index,
     avatar: `img/avatar-${generateAvatarIndex()}.svg`,
