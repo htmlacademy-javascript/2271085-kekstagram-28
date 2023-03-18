@@ -1,34 +1,34 @@
 import {isEscapeKey} from './util.js';
 import {thumbnailRender} from './miniature.js';
 
-const pictureArray = thumbnailRender();
-const bigPicture = document.querySelector('.big-picture');
-const picturesList = document.querySelector('.pictures');
-const bigPictureCanсel = document.querySelector('.big-picture__cancel');
-const pictureImg = document.querySelector('.big-picture__img img');
-const bigPictureLikes = bigPicture.querySelector('.likes-count');
-const bigPictureCommentsNumber = bigPicture.querySelector('.comments-count');
-const bigPictureCommentsContainer = bigPicture.querySelector('.social__comments');
-const bigPictureDescription = bigPicture.querySelector('.social__caption');
-const commentCount = bigPicture.querySelector('.social__comment-count');
-const commentLoader = bigPicture.querySelector('.comments-loader');
+const pictureData = thumbnailRender();
+const bigPictureElement = document.querySelector('.big-picture');
+const picturesSection = document.querySelector('.pictures');
+const bigPictureCancelElement = document.querySelector('.big-picture__cancel');
+const bigPictureImg = document.querySelector('.big-picture__img img');
+const bigPictureLikes = bigPictureElement.querySelector('.likes-count');
+const bigPictureAllComments = bigPictureElement.querySelector('.comments-count');
+const bigPictureCommentsContainer = bigPictureElement.querySelector('.social__comments');
+const bigPictureDescription = bigPictureElement.querySelector('.social__caption');
+const commentCount = bigPictureElement.querySelector('.social__comment-count');
+const commentLoader = bigPictureElement.querySelector('.comments-loader');
 
 const openBigPicture = (evt) => {
-  bigPicture.classList.remove('hidden');
+  bigPictureElement.classList.remove('hidden');
   commentCount.classList.add('hidden');
   commentLoader.classList.add('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 
-  if (evt.target.closest('.picture')){
-    pictureImg.src = evt.target.src;
+  if (evt.target.closest('[data-id]')){
+    bigPictureImg.src = evt.target.src;
     bigPictureDescription.textContent = evt.target.alt;
     const parent = evt.target.parentNode;
-    bigPictureCommentsNumber.textContent = parent.querySelector('.picture__comments').textContent;
+    bigPictureAllComments.textContent = parent.querySelector('.picture__comments').textContent;
     bigPictureLikes.textContent = parent.querySelector('.picture__likes').textContent;
 
     const makeComment = () => {
-      const bigPictureComments = pictureArray[parent.id - 1].comments;
+      const bigPictureComments = pictureData[parent.dataset.id - 1].comments;
       bigPictureCommentsContainer.innerHTML = '';
       bigPictureComments.forEach((element) => {
         bigPictureCommentsContainer.insertAdjacentHTML('beforeend',
@@ -50,7 +50,7 @@ const openBigPicture = (evt) => {
 };
 
 const closeBigPicture = () => {
-  bigPicture.classList.add('hidden');
+  bigPictureElement.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
 };
@@ -62,7 +62,7 @@ function onDocumentKeydown (evt) {
   }
 }
 
-picturesList.addEventListener('click', openBigPicture);
-bigPictureCanсel.addEventListener('click',closeBigPicture);
+picturesSection.addEventListener('click', openBigPicture);
+bigPictureCancelElement.addEventListener('click',closeBigPicture);
 
 
