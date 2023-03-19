@@ -14,25 +14,27 @@ const commentCount = bigPictureElement.querySelector('.social__comment-count');
 const commentLoader = bigPictureElement.querySelector('.comments-loader');
 
 const openBigPicture = (evt) => {
+  if (!evt.target.closest('[data-id]')){
+    return;
+  }
   bigPictureElement.classList.remove('hidden');
   commentCount.classList.add('hidden');
   commentLoader.classList.add('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 
-  if (evt.target.closest('[data-id]')){
-    bigPictureImg.src = evt.target.src;
-    bigPictureDescription.textContent = evt.target.alt;
-    const parent = evt.target.parentNode;
-    bigPictureAllComments.textContent = parent.querySelector('.picture__comments').textContent;
-    bigPictureLikes.textContent = parent.querySelector('.picture__likes').textContent;
+  bigPictureImg.src = evt.target.src;
+  bigPictureDescription.textContent = evt.target.alt;
+  const parent = evt.target.parentNode;
+  bigPictureAllComments.textContent = parent.querySelector('.picture__comments').textContent;
+  bigPictureLikes.textContent = parent.querySelector('.picture__likes').textContent;
 
-    const makeComment = () => {
-      const bigPictureComments = pictureData[parent.dataset.id - 1].comments;
-      bigPictureCommentsContainer.innerHTML = '';
-      bigPictureComments.forEach((element) => {
-        bigPictureCommentsContainer.insertAdjacentHTML('beforeend',
-          `<li class = "social__comment" >
+  const makeComment = () => {
+    const bigPictureComments = pictureData[parent.dataset.id - 1].comments;
+    bigPictureCommentsContainer.innerHTML = '';
+    bigPictureComments.forEach((element) => {
+      bigPictureCommentsContainer.insertAdjacentHTML('beforeend',
+        `<li class = "social__comment" >
             <img class="social__picture"
             src = "${element.avatar}";
             alt="${element.name}"
@@ -41,11 +43,11 @@ const openBigPicture = (evt) => {
             </img>
             <p class="social__text">${element.message}</p>
           </li>`
-        );
-      });
-    };
-    makeComment();
-  }
+      );
+    });
+  };
+  makeComment();
+
 
 };
 
