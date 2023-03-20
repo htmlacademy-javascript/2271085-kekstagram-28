@@ -50,6 +50,9 @@ const openBigPicture = (evt) => {
       );
     });
 
+    if (commentsShown >= bigPictureComments.length){
+      commentLoader.classList.add('hidden');
+    }
   };
   makeComment(commentsShown);
 
@@ -57,9 +60,6 @@ const openBigPicture = (evt) => {
     commentsShown += COMMENTS_PORTION;
     makeComment(commentsShown);
 
-    if (commentsShown >= bigPictureComments.length){
-      commentLoader.classList.add('hidden');
-    }
   };
   commentLoader.addEventListener('click', showComment);
 };
