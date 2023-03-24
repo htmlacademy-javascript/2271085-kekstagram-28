@@ -1,3 +1,5 @@
+import { resetEffect } from './effects.js';
+import { resetScale } from './scale.js';
 import {isEscapeKey} from './util.js';
 
 const TAG_ERROR_MESSAGE = 'Неверный хэштэг';
@@ -52,6 +54,8 @@ const closeUploadForm = () => {
   document.body.classList.remove('modal-open');
   uploadForm.reset();
   pristine.reset();
+  resetScale();
+  resetEffect();
 };
 
 const isTextInFocus = () =>
