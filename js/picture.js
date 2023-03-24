@@ -1,6 +1,7 @@
 import {isEscapeKey} from './util.js';
 import {thumbnailRender} from './miniature.js';
 
+const COMMENTS_PORTION = 5;
 const pictureData = thumbnailRender();
 const bigPictureElement = document.querySelector('.big-picture');
 const picturesSection = document.querySelector('.pictures');
@@ -17,9 +18,8 @@ const openBigPicture = (evt) => {
   if (!evt.target.closest('[data-id]')){
     return;
   }
+
   bigPictureElement.classList.remove('hidden');
-  commentCount.classList.add('hidden');
-  commentLoader.classList.add('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 
@@ -28,11 +28,15 @@ const openBigPicture = (evt) => {
   const parent = evt.target.parentNode;
   bigPictureAllComments.textContent = parent.querySelector('.picture__comments').textContent;
   bigPictureLikes.textContent = parent.querySelector('.picture__likes').textContent;
+  const bigPictureComments = pictureData[parent.dataset.id - 1].comments;
+  let commentsShown = 5;
 
-  const makeComment = () => {
-    const bigPictureComments = pictureData[parent.dataset.id - 1].comments;
+  const makeComment = (numb) => {
     bigPictureCommentsContainer.innerHTML = '';
-    bigPictureComments.forEach((element) => {
+    commentLoader.classList.remove('hidden');
+    const renderComment = bigPictureComments.slice(0,numb);
+    commentCount.textContent = `${renderComment.length} из ${bigPictureAllComments.textContent} комментариев`;
+    renderComment.forEach((element) => {
       bigPictureCommentsContainer.insertAdjacentHTML('beforeend',
         `<li class = "social__comment" >
             <img class="social__picture"
@@ -45,11 +49,21 @@ const openBigPicture = (evt) => {
           </li>`
       );
     });
+
+    if (commentsShown >= bigPictureComments.length){
+      commentLoader.classList.add('hidden');
+    }
   };
-  makeComment();
+  makeComment(commentsShown);
 
+  const showComment = () => {
+    commentsShown += COMMENTS_PORTION;
+    makeComment(commentsShown);
 
+  };
+  commentLoader.addEventListener('click', showComment);
 };
+
 
 const closeBigPicture = () => {
   bigPictureElement.classList.add('hidden');
