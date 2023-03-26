@@ -44,7 +44,6 @@ const validateUniqueHashtags = (value) => {
   return hasUniqueTags(tagsList);
 };
 
-
 const validateCountHashtags = (value) => {
   makeTaglist(value,tagsList);
   return hasValidCount(tagsList);
