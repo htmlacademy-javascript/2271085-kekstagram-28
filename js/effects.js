@@ -74,10 +74,8 @@ noUiSlider.create(sliderElement, {
   connect: 'lower',
 });
 
-
 hideSlider();
 const updateSlider = () =>{
-  console.log(sliderElement.noUiSlider);
   sliderElement.noUiSlider.updateOptions({
     range:{
       min: chosenEffect.min,
@@ -96,8 +94,10 @@ function onEffectChange (evt){
   }
   chosenEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
   imageElement.className = `effects__preview--${chosenEffect.name}`;
-  console.log(`onchange`, chosenEffect);
   updateSlider();
+  if (chosenEffect === DEFAULT_EFFECT){
+    hideSlider();
+  }
 }
 
 const onSliderUpdate = () => {

@@ -2,7 +2,9 @@ import { resetEffect } from './effects.js';
 import { resetScale } from './scale.js';
 import {isEscapeKey} from './util.js';
 
-const TAG_ERROR_MESSAGE = 'Неверный хэштэг';
+const ERROR_MESSAGE_VALID_TAG = 'Хэштэг не может быть одной #, должен начинаться с # и быть не больше 20 символов';
+const ERROR_MESSAGE_TAG_COUNT = 'Должно быть не более 5 хэштэгов';
+const ERROR_MESSAGE_UNIQUE_TAG = 'Хэштэги должны быть уникальными';
 const MAX_HASHTAGS_COUNT = 5;
 const VALID_TEXT = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -28,18 +30,47 @@ const hasUniqueTags = (tags) => {
 
 const isValidTag = (tag) => VALID_TEXT.test(tag);
 
-const validateHashtags = (value) => {
-  const tagsList = value
+let tagsList;
+const makeTaglist = (value) => {
+  tagsList = value
     .trim()
     .split(' ')
     .filter((tag) => tag.trim().length);
-  return hasValidCount(tagsList) && hasUniqueTags(tagsList) && tagsList.every(isValidTag);
+  return tagsList;
+};
+
+const validateUniqueHashtags = (value) => {
+  makeTaglist(value,tagsList);
+  return hasUniqueTags(tagsList);
+};
+
+
+const validateCountHashtags = (value) => {
+  makeTaglist(value,tagsList);
+  return hasValidCount(tagsList);
+};
+
+const validateValidHashtags = (value) => {
+  makeTaglist(value,tagsList);
+  return tagsList.every(isValidTag);
 };
 
 pristine.addValidator(
   hashtagField,
-  validateHashtags,
-  TAG_ERROR_MESSAGE
+  validateUniqueHashtags,
+  ERROR_MESSAGE_UNIQUE_TAG
+);
+
+pristine.addValidator(
+  hashtagField,
+  validateCountHashtags,
+  ERROR_MESSAGE_TAG_COUNT
+);
+
+pristine.addValidator(
+  hashtagField,
+  validateValidHashtags,
+  ERROR_MESSAGE_VALID_TAG
 );
 
 const openUploadForm = () => {
