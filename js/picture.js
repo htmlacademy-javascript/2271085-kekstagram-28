@@ -19,6 +19,8 @@ const openBigPicture = (evt) => {
     return;
   }
 
+  evt.preventDefault();
+
   bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
@@ -80,5 +82,3 @@ function onDocumentKeydown (evt) {
 
 picturesSection.addEventListener('click', openBigPicture);
 bigPictureCancelElement.addEventListener('click',closeBigPicture);
-
-
