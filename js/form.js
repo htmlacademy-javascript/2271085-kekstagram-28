@@ -9,11 +9,11 @@ const MAX_HASHTAGS_COUNT = 5;
 const VALID_TEXT = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const uploadForm = document.querySelector('.img-upload__form');
-const uploadFile = document.querySelector('#upload-file');
-const uploadFormSection = document.querySelector('.img-upload__overlay');
+const uploadFileElement = document.querySelector('#upload-file');
+const uploadFormSectionElement = document.querySelector('.img-upload__overlay');
 const uploadFormCancelElement = document.querySelector('#upload-cancel');
-const hashtagField = document.querySelector('.text__hashtags');
-const commentField = document.querySelector('.text__description');
+const hashtagFieldElement = document.querySelector('.text__hashtags');
+const commentFieldElement = document.querySelector('.text__description');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__wrapper',
@@ -55,31 +55,31 @@ const validateValidHashtags = (value) => {
 };
 
 pristine.addValidator(
-  hashtagField,
+  hashtagFieldElement,
   validateUniqueHashtags,
   ERROR_MESSAGE_UNIQUE_TAG
 );
 
 pristine.addValidator(
-  hashtagField,
+  hashtagFieldElement,
   validateCountHashtags,
   ERROR_MESSAGE_TAG_COUNT
 );
 
 pristine.addValidator(
-  hashtagField,
+  hashtagFieldElement,
   validateValidHashtags,
   ERROR_MESSAGE_VALID_TAG
 );
 
 const openUploadForm = () => {
-  uploadFormSection.classList.remove('hidden');
+  uploadFormSectionElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const closeUploadForm = () => {
-  uploadFormSection.classList.add('hidden');
+  uploadFormSectionElement.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
   uploadForm.reset();
@@ -89,8 +89,8 @@ const closeUploadForm = () => {
 };
 
 const isTextInFocus = () =>
-  document.activeElement === hashtagField ||
-  document.activeElement === commentField;
+  document.activeElement === hashtagFieldElement ||
+  document.activeElement === commentFieldElement;
 
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt) && !isTextInFocus()) {
@@ -99,7 +99,7 @@ function onDocumentKeydown (evt) {
   }
 }
 
-uploadFile.addEventListener('change', openUploadForm);
+uploadFileElement.addEventListener('change', openUploadForm);
 uploadFormCancelElement.addEventListener('click', closeUploadForm);
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
