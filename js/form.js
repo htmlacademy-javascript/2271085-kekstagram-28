@@ -1,15 +1,19 @@
+import { resetEffect } from './effects.js';
+import { resetScale } from './scale.js';
 import {isEscapeKey} from './util.js';
 
-const TAG_ERROR_MESSAGE = 'Неверный хэштэг';
+const ERROR_MESSAGE_VALID_TAG = 'Хэштэг не может быть одной #, должен начинаться с # и быть не больше 20 символов';
+const ERROR_MESSAGE_TAG_COUNT = 'Должно быть не более 5 хэштэгов';
+const ERROR_MESSAGE_UNIQUE_TAG = 'Хэштэги должны быть уникальными';
 const MAX_HASHTAGS_COUNT = 5;
 const VALID_TEXT = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const uploadForm = document.querySelector('.img-upload__form');
-const uploadFile = document.querySelector('#upload-file');
-const uploadFormSection = document.querySelector('.img-upload__overlay');
+const uploadFileElement = document.querySelector('#upload-file');
+const uploadFormSectionElement = document.querySelector('.img-upload__overlay');
 const uploadFormCancelElement = document.querySelector('#upload-cancel');
-const hashtagField = document.querySelector('.text__hashtags');
-const commentField = document.querySelector('.text__description');
+const hashtagFieldElement = document.querySelector('.text__hashtags');
+const commentFieldElement = document.querySelector('.text__description');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__wrapper',
@@ -26,37 +30,67 @@ const hasUniqueTags = (tags) => {
 
 const isValidTag = (tag) => VALID_TEXT.test(tag);
 
-const validateHashtags = (value) => {
-  const tagsList = value
+let tagsList;
+const makeTaglist = (value) => {
+  tagsList = value
     .trim()
     .split(' ')
     .filter((tag) => tag.trim().length);
-  return hasValidCount(tagsList) && hasUniqueTags(tagsList) && tagsList.every(isValidTag);
+  return tagsList;
+};
+
+const validateUniqueHashtags = (value) => {
+  makeTaglist(value,tagsList);
+  return hasUniqueTags(tagsList);
+};
+
+const validateCountHashtags = (value) => {
+  makeTaglist(value,tagsList);
+  return hasValidCount(tagsList);
+};
+
+const validateValidHashtags = (value) => {
+  makeTaglist(value,tagsList);
+  return tagsList.every(isValidTag);
 };
 
 pristine.addValidator(
-  hashtagField,
-  validateHashtags,
-  TAG_ERROR_MESSAGE
+  hashtagFieldElement,
+  validateUniqueHashtags,
+  ERROR_MESSAGE_UNIQUE_TAG
+);
+
+pristine.addValidator(
+  hashtagFieldElement,
+  validateCountHashtags,
+  ERROR_MESSAGE_TAG_COUNT
+);
+
+pristine.addValidator(
+  hashtagFieldElement,
+  validateValidHashtags,
+  ERROR_MESSAGE_VALID_TAG
 );
 
 const openUploadForm = () => {
-  uploadFormSection.classList.remove('hidden');
+  uploadFormSectionElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const closeUploadForm = () => {
-  uploadFormSection.classList.add('hidden');
+  uploadFormSectionElement.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
   uploadForm.reset();
   pristine.reset();
+  resetScale();
+  resetEffect();
 };
 
 const isTextInFocus = () =>
-  document.activeElement === hashtagField ||
-  document.activeElement === commentField;
+  document.activeElement === hashtagFieldElement ||
+  document.activeElement === commentFieldElement;
 
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt) && !isTextInFocus()) {
@@ -65,7 +99,7 @@ function onDocumentKeydown (evt) {
   }
 }
 
-uploadFile.addEventListener('change', openUploadForm);
+uploadFileElement.addEventListener('change', openUploadForm);
 uploadFormCancelElement.addEventListener('click', closeUploadForm);
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
