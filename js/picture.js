@@ -1,18 +1,32 @@
-import {isEscapeKey} from './util.js';
+import {isEscapeKey, showAlert} from './util.js';
 import {thumbnailRender} from './miniature.js';
+import {getData} from './api.js';
+
 
 const COMMENTS_PORTION = 5;
-const pictureData = thumbnailRender();
+let pictureData;
 const bigPictureElement = document.querySelector('.big-picture');
-const picturesSection = document.querySelector('.pictures');
+const picturesSectionElement = document.querySelector('.pictures');
 const bigPictureCancelElement = document.querySelector('.big-picture__cancel');
-const bigPictureImg = document.querySelector('.big-picture__img img');
-const bigPictureLikes = bigPictureElement.querySelector('.likes-count');
-const bigPictureAllComments = bigPictureElement.querySelector('.comments-count');
-const bigPictureCommentsContainer = bigPictureElement.querySelector('.social__comments');
-const bigPictureDescription = bigPictureElement.querySelector('.social__caption');
-const commentCount = bigPictureElement.querySelector('.social__comment-count');
-const commentLoader = bigPictureElement.querySelector('.comments-loader');
+const bigPictureImgElement = document.querySelector('.big-picture__img img');
+const bigPictureLikesElement = bigPictureElement.querySelector('.likes-count');
+const bigPictureAllCommentsElement = bigPictureElement.querySelector('.comments-count');
+const bigPictureCommentsContainerElement = bigPictureElement.querySelector('.social__comments');
+const bigPictureDescriptionElement = bigPictureElement.querySelector('.social__caption');
+const commentCountElement = bigPictureElement.querySelector('.social__comment-count');
+const commentLoaderElement = bigPictureElement.querySelector('.comments-loader');
+
+
+getData()
+  .then((images) => {
+    pictureData = images;
+    thumbnailRender(images);
+  })
+  .catch(
+    (err) => {
+      showAlert(err.message);
+    }
+  );
 
 const openBigPicture = (evt) => {
   if (!evt.target.closest('[data-id]')){
@@ -25,21 +39,21 @@ const openBigPicture = (evt) => {
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 
-  bigPictureImg.src = evt.target.src;
-  bigPictureDescription.textContent = evt.target.alt;
+  bigPictureImgElement.src = evt.target.src;
+  bigPictureDescriptionElement.textContent = evt.target.alt;
   const parent = evt.target.parentNode;
-  bigPictureAllComments.textContent = parent.querySelector('.picture__comments').textContent;
-  bigPictureLikes.textContent = parent.querySelector('.picture__likes').textContent;
+  bigPictureAllCommentsElement.textContent = parent.querySelector('.picture__comments').textContent;
+  bigPictureLikesElement.textContent = parent.querySelector('.picture__likes').textContent;
   const bigPictureComments = pictureData[parent.dataset.id - 1].comments;
   let commentsShown = 5;
 
   const makeComment = (numb) => {
-    bigPictureCommentsContainer.innerHTML = '';
-    commentLoader.classList.remove('hidden');
+    bigPictureCommentsContainerElement.innerHTML = '';
+    commentLoaderElement.classList.remove('hidden');
     const renderComment = bigPictureComments.slice(0,numb);
-    commentCount.textContent = `${renderComment.length} из ${bigPictureAllComments.textContent} комментариев`;
+    commentCountElement.textContent = `${renderComment.length} из ${bigPictureAllCommentsElement.textContent} комментариев`;
     renderComment.forEach((element) => {
-      bigPictureCommentsContainer.insertAdjacentHTML('beforeend',
+      bigPictureCommentsContainerElement.insertAdjacentHTML('beforeend',
         `<li class = "social__comment" >
             <img class="social__picture"
             src = "${element.avatar}";
@@ -53,7 +67,7 @@ const openBigPicture = (evt) => {
     });
 
     if (commentsShown >= bigPictureComments.length){
-      commentLoader.classList.add('hidden');
+      commentLoaderElement.classList.add('hidden');
     }
   };
   makeComment(commentsShown);
@@ -63,7 +77,7 @@ const openBigPicture = (evt) => {
     makeComment(commentsShown);
 
   };
-  commentLoader.addEventListener('click', showComment);
+  commentLoaderElement.addEventListener('click', showComment);
 };
 
 
@@ -80,5 +94,5 @@ function onDocumentKeydown (evt) {
   }
 }
 
-picturesSection.addEventListener('click', openBigPicture);
+picturesSectionElement.addEventListener('click', openBigPicture);
 bigPictureCancelElement.addEventListener('click',closeBigPicture);

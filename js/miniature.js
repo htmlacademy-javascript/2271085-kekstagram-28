@@ -1,18 +1,15 @@
-import {getPictures} from './data.js';
+const picturesListElement = document.querySelector('.pictures');
 
-const picturesList = document.querySelector('.pictures');
-
-const pictureItemTemplate = document.querySelector('#picture')
+const pictureItemTemplateElement = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const thumbnailRender = () => {
-  const newPictures = getPictures();
+const thumbnailRender = (images) => {
 
   const newPicturesFragment = document.createDocumentFragment();
 
-  newPictures.forEach(({url, likes, comments,description, id}) => {
-    const newPicture = pictureItemTemplate.cloneNode(true);
+  images.forEach(({url, likes, comments,description, id}) => {
+    const newPicture = pictureItemTemplateElement.cloneNode(true);
     newPicture.querySelector('.picture__img').src = url;
     newPicture.querySelector('.picture__likes').textContent = likes;
     newPicture.querySelector('.picture__comments').textContent = comments.length;
@@ -21,8 +18,8 @@ const thumbnailRender = () => {
     newPicturesFragment.appendChild(newPicture);
 
   });
-  picturesList.appendChild(newPicturesFragment);
-  return newPictures;
+  picturesListElement.appendChild(newPicturesFragment);
+  return images;
 };
 
 export {thumbnailRender};
