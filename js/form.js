@@ -2,7 +2,7 @@ import { resetEffect } from './effects.js';
 import { resetScale } from './scale.js';
 import {isEscapeKey} from './util.js';
 import {sendData} from './api.js';
-import {showSuccessMessage,showErrorMessage} from './messages.js';
+import {showSuccessMessage,showErrorMessage,closeErrorMessage,closeSuccessMessage} from './messages.js';
 
 const SubmitButtonText = {
   IDLE: 'Сохранить',
@@ -111,6 +111,16 @@ const isTextInFocus = () =>
   document.activeElement === commentFieldElement;
 
 function onDocumentKeydown (evt) {
+  if (document.querySelector('.error')){
+    evt.preventDefault();
+    closeErrorMessage();
+    return;
+  }
+  if (document.querySelector('.success')){
+    evt.preventDefault();
+    closeSuccessMessage();
+    return;
+  }
   if (isEscapeKey(evt) && !isTextInFocus()) {
     evt.preventDefault();
     closeUploadForm();
@@ -136,3 +146,4 @@ const setUserFormSubmit = (onSuccess) => {
 };
 setUserFormSubmit(closeUploadForm);
 
+export {onDocumentKeydown};
