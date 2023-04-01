@@ -24,9 +24,9 @@ const commentFieldElement = document.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__wrapper',
-  errorTextParent: 'img-upload__wrapper',
-  errorTextClass: 'img-upload__wrapper__error',
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextClass: 'img-upload__wrapper-error',
 });
 
 const blockSubmitButton = () => {
