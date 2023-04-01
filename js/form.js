@@ -130,6 +130,7 @@ function onDocumentKeydown (evt) {
 uploadFileElement.addEventListener('change', openUploadForm);
 uploadFormCancelElement.addEventListener('click', closeUploadForm);
 
+
 const setUserFormSubmit = (onSuccess) => {
   uploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
