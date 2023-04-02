@@ -1,6 +1,13 @@
 import { resetEffect } from './effects.js';
 import { resetScale } from './scale.js';
 import {isEscapeKey} from './util.js';
+import {sendData} from './api.js';
+import {showSuccessMessage,showErrorMessage,closeErrorMessage,closeSuccessMessage} from './messages.js';
+
+const SubmitButtonText = {
+  IDLE: 'Сохранить',
+  SENDING: 'Сохраняю...'
+};
 
 const ERROR_MESSAGE_VALID_TAG = 'Хэштэг не может быть одной #, должен начинаться с # и быть не больше 20 символов';
 const ERROR_MESSAGE_TAG_COUNT = 'Должно быть не более 5 хэштэгов';
@@ -14,12 +21,23 @@ const uploadFormSectionElement = document.querySelector('.img-upload__overlay');
 const uploadFormCancelElement = document.querySelector('#upload-cancel');
 const hashtagFieldElement = document.querySelector('.text__hashtags');
 const commentFieldElement = document.querySelector('.text__description');
+const submitButton = document.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__wrapper',
-  errorTextParent: 'img-upload__wrapper',
-  errorTextClass: 'img-upload__wrapper__error',
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextClass: 'img-upload__wrapper-error',
 });
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
 
 const hasValidCount = (tags) => tags.length <= MAX_HASHTAGS_COUNT;
 
@@ -93,6 +111,16 @@ const isTextInFocus = () =>
   document.activeElement === commentFieldElement;
 
 function onDocumentKeydown (evt) {
+  if (document.querySelector('.error')){
+    evt.preventDefault();
+    closeErrorMessage();
+    return;
+  }
+  if (document.querySelector('.success')){
+    evt.preventDefault();
+    closeSuccessMessage();
+    return;
+  }
   if (isEscapeKey(evt) && !isTextInFocus()) {
     evt.preventDefault();
     closeUploadForm();
@@ -101,7 +129,22 @@ function onDocumentKeydown (evt) {
 
 uploadFileElement.addEventListener('change', openUploadForm);
 uploadFormCancelElement.addEventListener('click', closeUploadForm);
-uploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+
+
+const setUserFormSubmit = (onSuccess) => {
+  uploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if(isValid){
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .then (showSuccessMessage)
+        .catch(showErrorMessage)
+        .finally(unblockSubmitButton);
+    }
+  });
+};
+setUserFormSubmit(closeUploadForm);
+
+export {onDocumentKeydown};
