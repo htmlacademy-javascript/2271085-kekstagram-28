@@ -1,10 +1,9 @@
-import {isEscapeKey, showAlert} from './util.js';
+import {isEscapeKey, showAlert, debounce} from './util.js';
 import {thumbnailRender} from './miniature.js';
 import {getData} from './api.js';
-
+import {initFilters,getFilteredPictures} from './filters.js';
 
 const COMMENTS_PORTION = 5;
-let pictureData;
 const bigPictureElement = document.querySelector('.big-picture');
 const picturesSectionElement = document.querySelector('.pictures');
 const bigPictureCancelElement = document.querySelector('.big-picture__cancel');
@@ -15,13 +14,16 @@ const bigPictureCommentsContainerElement = bigPictureElement.querySelector('.soc
 const bigPictureDescriptionElement = bigPictureElement.querySelector('.social__caption');
 const commentCountElement = bigPictureElement.querySelector('.social__comment-count');
 const commentLoaderElement = bigPictureElement.querySelector('.comments-loader');
-
+let pictureData;
 
 getData()
   .then((images) => {
-    pictureData = images;
-    thumbnailRender(images);
+    const debounceThumbnailRender = debounce(thumbnailRender);
+    initFilters(images,debounceThumbnailRender);
+    pictureData = getFilteredPictures(images);
+    thumbnailRender(pictureData);
   })
+
   .catch(
     (err) => {
       showAlert(err.message);

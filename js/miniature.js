@@ -5,7 +5,7 @@ const pictureItemTemplateElement = document.querySelector('#picture')
   .querySelector('.picture');
 
 const thumbnailRender = (images) => {
-
+  picturesListElement.querySelectorAll('.picture').forEach((element) => element.remove());
   const newPicturesFragment = document.createDocumentFragment();
 
   images.forEach(({url, likes, comments,description, id}) => {
