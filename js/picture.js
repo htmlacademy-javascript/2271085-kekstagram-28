@@ -46,7 +46,7 @@ const openBigPicture = (evt) => {
   const parent = evt.target.parentNode;
   bigPictureAllCommentsElement.textContent = parent.querySelector('.picture__comments').textContent;
   bigPictureLikesElement.textContent = parent.querySelector('.picture__likes').textContent;
-  const bigPictureComments = pictureData[parent.dataset.id - 1].comments;
+  const bigPictureComments = pictureData[parent.dataset.id].comments;
   let commentsShown = 5;
 
   const makeComment = (numb) => {

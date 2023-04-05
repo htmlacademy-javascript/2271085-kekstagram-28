@@ -16,7 +16,6 @@ const thumbnailRender = (images) => {
     newPicture.dataset.id = id;
     newPicture.querySelector('.picture__img').alt = description;
     newPicturesFragment.appendChild(newPicture);
-
   });
   picturesListElement.appendChild(newPicturesFragment);
   return images;
