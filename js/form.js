@@ -1,6 +1,6 @@
 import { resetEffect } from './effects.js';
 import { resetScale } from './scale.js';
-import {isEscapeKey} from './util.js';
+import {isEscapeKey, showAlert} from './util.js';
 import {sendData} from './api.js';
 import {showSuccessMessage,showErrorMessage,closeErrorMessage,closeSuccessMessage} from './messages.js';
 
@@ -14,6 +14,7 @@ const ERROR_MESSAGE_TAG_COUNT = 'Должно быть не более 5 хэш�
 const ERROR_MESSAGE_UNIQUE_TAG = 'Хэштэги должны быть уникальными';
 const MAX_HASHTAGS_COUNT = 5;
 const VALID_TEXT = /^#[a-zа-яё0-9]{1,19}$/i;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadFileElement = document.querySelector('#upload-file');
@@ -22,6 +23,7 @@ const uploadFormCancelElement = document.querySelector('#upload-cancel');
 const hashtagFieldElement = document.querySelector('.text__hashtags');
 const commentFieldElement = document.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
+const previewElement = document.querySelector('.img-upload__preview img');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -94,6 +96,16 @@ const openUploadForm = () => {
   uploadFormSectionElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
+
+  const file = uploadFileElement.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    previewElement.src = URL.createObjectURL(file);
+  } else {
+    showAlert('Вы должны выбрать файл jpg, jpeg или png');
+  }
 };
 
 const closeUploadForm = () => {
