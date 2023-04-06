@@ -23,7 +23,6 @@ getData()
     pictureData = getFilteredPictures(images);
     thumbnailRender(pictureData);
   })
-
   .catch(
     (err) => {
       showAlert(err.message);
@@ -77,7 +76,6 @@ const openBigPicture = (evt) => {
   const showComment = () => {
     commentsShown += COMMENTS_PORTION;
     makeComment(commentsShown);
-
   };
   commentLoaderElement.addEventListener('click', showComment);
 };

@@ -116,4 +116,4 @@ const resetEffect = () => {
 sliderElement.noUiSlider.on('update',onSliderUpdate);
 effectsListElement.addEventListener('change', onEffectChange);
 
-export {resetEffect};
+export {resetEffect,hideSlider};
