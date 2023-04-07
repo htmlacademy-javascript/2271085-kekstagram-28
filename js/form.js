@@ -1,4 +1,4 @@
-import { resetEffect } from './effects.js';
+import { resetEffect,hideSlider } from './effects.js';
 import { resetScale } from './scale.js';
 import {isEscapeKey, showAlert} from './util.js';
 import {sendData} from './api.js';
@@ -69,7 +69,7 @@ const validateCountHashtags = (value) => {
   return hasValidCount(tagsList);
 };
 
-const validateValidHashtags = (value) => {
+const validateHashtags = (value) => {
   makeTaglist(value,tagsList);
   return tagsList.every(isValidTag);
 };
@@ -88,7 +88,7 @@ pristine.addValidator(
 
 pristine.addValidator(
   hashtagFieldElement,
-  validateValidHashtags,
+  validateHashtags,
   ERROR_MESSAGE_VALID_TAG
 );
 
@@ -96,7 +96,7 @@ const openUploadForm = () => {
   uploadFormSectionElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
-
+  hideSlider();
   const file = uploadFileElement.files[0];
   const fileName = file.name.toLowerCase();
 

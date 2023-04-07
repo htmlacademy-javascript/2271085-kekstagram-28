@@ -7,7 +7,7 @@ const scaleBiggerButtonElement = document.querySelector('.scale__control--bigger
 const scaleValueElement = document.querySelector('.scale__control--value');
 const imageElement = document.querySelector('.img-upload__preview img');
 
-let actuallScale = parseInt(scaleValueElement.value, 10);
+let actualScale = parseInt(scaleValueElement.value, 10);
 
 const changeScale = (value) => {
   imageElement.style.transform = `scale(${value / 100})`;
@@ -15,21 +15,21 @@ const changeScale = (value) => {
 };
 
 const makeSmaller = () => {
-  actuallScale -= SCALE_STEP;
-  if(actuallScale < SCALE_STEP){
-    actuallScale = SCALE_STEP;
+  actualScale -= SCALE_STEP;
+  if(actualScale < SCALE_STEP){
+    actualScale = SCALE_STEP;
   }
-  scaleValueElement.value = actuallScale;
-  changeScale(actuallScale);
+  scaleValueElement.value = actualScale;
+  changeScale(actualScale);
 };
 
 const makeBigger = () => {
-  actuallScale += SCALE_STEP;
-  if(actuallScale >= SCALE_MAX){
-    actuallScale = SCALE_MAX;
+  actualScale += SCALE_STEP;
+  if(actualScale >= SCALE_MAX){
+    actualScale = SCALE_MAX;
   }
-  scaleValueElement.value = actuallScale;
-  changeScale(actuallScale);
+  scaleValueElement.value = actualScale;
+  changeScale(actualScale);
 };
 
 const resetScale = () => changeScale(SCALE_DEFAULT);
