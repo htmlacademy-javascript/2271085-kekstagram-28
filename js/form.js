@@ -22,7 +22,7 @@ const uploadFormSectionElement = document.querySelector('.img-upload__overlay');
 const uploadFormCancelElement = document.querySelector('#upload-cancel');
 const hashtagFieldElement = document.querySelector('.text__hashtags');
 const commentFieldElement = document.querySelector('.text__description');
-const submitButton = document.querySelector('.img-upload__submit');
+const submitButtonElement = document.querySelector('.img-upload__submit');
 const previewElement = document.querySelector('.img-upload__preview img');
 
 const pristine = new Pristine(uploadForm, {
@@ -32,13 +32,13 @@ const pristine = new Pristine(uploadForm, {
 });
 
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = SubmitButtonText.SENDING;
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = SubmitButtonText.SENDING;
 };
 
 const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = SubmitButtonText.IDLE;
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = SubmitButtonText.IDLE;
 };
 
 const hasValidCount = (tags) => tags.length <= MAX_HASHTAGS_COUNT;
@@ -92,7 +92,7 @@ pristine.addValidator(
   ERROR_MESSAGE_VALID_TAG
 );
 
-const openUploadForm = () => {
+const onOpenUploadForm = () => {
   uploadFormSectionElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
@@ -108,7 +108,7 @@ const openUploadForm = () => {
   }
 };
 
-const closeUploadForm = () => {
+const onCloseUploadForm = () => {
   uploadFormSectionElement.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
@@ -135,12 +135,12 @@ function onDocumentKeydown (evt) {
   }
   if (isEscapeKey(evt) && !isTextInFocus()) {
     evt.preventDefault();
-    closeUploadForm();
+    onCloseUploadForm();
   }
 }
 
-uploadFileElement.addEventListener('change', openUploadForm);
-uploadFormCancelElement.addEventListener('click', closeUploadForm);
+uploadFileElement.addEventListener('change', onOpenUploadForm);
+uploadFormCancelElement.addEventListener('click', onCloseUploadForm);
 
 
 const setUserFormSubmit = (onSuccess) => {
@@ -157,6 +157,6 @@ const setUserFormSubmit = (onSuccess) => {
     }
   });
 };
-setUserFormSubmit(closeUploadForm);
+setUserFormSubmit(onCloseUploadForm);
 
 export {onDocumentKeydown};
