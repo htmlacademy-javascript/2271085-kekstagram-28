@@ -29,7 +29,7 @@ getData()
     }
   );
 
-const openBigPicture = (evt) => {
+const onOpenBigPicture = (evt) => {
   if (!evt.target.closest('[data-id]')){
     return;
   }
@@ -81,7 +81,7 @@ const openBigPicture = (evt) => {
 };
 
 
-const closeBigPicture = () => {
+const onCloseBigPicture = () => {
   bigPictureElement.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
@@ -90,9 +90,9 @@ const closeBigPicture = () => {
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeBigPicture();
+    onCloseBigPicture();
   }
 }
 
-picturesSectionElement.addEventListener('click', openBigPicture);
-bigPictureCancelElement.addEventListener('click',closeBigPicture);
+picturesSectionElement.addEventListener('click', onOpenBigPicture);
+bigPictureCancelElement.addEventListener('click',onCloseBigPicture);

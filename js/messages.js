@@ -8,17 +8,17 @@ const errorMessageTemplateElement = document.querySelector('#error')
   .content
   .querySelector('.error');
 
-const closeSuccessMessage = () => {
+const onCloseSuccessMessage = () => {
   const successElement = document.querySelector('.success');
   const successCloseElement = successElement.querySelector('.success__button');
-  successCloseElement.removeEventListener('click',closeSuccessMessage);
+  successCloseElement.removeEventListener('click',onCloseSuccessMessage);
   document.removeEventListener('keydown',onDocumentKeydown);
   successElement.remove();
 };
 
-function clickOutOfSuccessMessage (evt) {
+function onClickOutOfSuccessMessage (evt) {
   if (!evt.target.closest('.success__inner')){
-    closeSuccessMessage();
+    onCloseSuccessMessage();
   }
 }
 
@@ -28,22 +28,22 @@ const showSuccessMessage = () => {
 
   const successElement = document.querySelector('.success');
   const successCloseElement = successElement.querySelector('.success__button');
-  successCloseElement.addEventListener('click', closeSuccessMessage);
+  successCloseElement.addEventListener('click', onCloseSuccessMessage);
   document.addEventListener('keydown',onDocumentKeydown);
-  successElement.addEventListener('click',clickOutOfSuccessMessage);
+  successElement.addEventListener('click',onClickOutOfSuccessMessage);
 };
 
-const closeErrorMessage = () => {
+const onCloseErrorMessage = () => {
   const errorElement = document.querySelector('.error');
   const errorCloseElement = errorElement.querySelector('.error__button');
-  errorCloseElement.removeEventListener('click',closeErrorMessage);
+  errorCloseElement.removeEventListener('click',onCloseErrorMessage);
   removeEventListener('keydown', onDocumentKeydown);
   errorElement.remove();
 };
 
-function clickOutOfErrorMessage (evt) {
+function onClickOutOfErrorMessage (evt) {
   if (!evt.target.closest('.error__inner')){
-    closeErrorMessage();
+    onCloseErrorMessage();
   }
 }
 
@@ -52,9 +52,9 @@ const showErrorMessage = () => {
   document.body.appendChild(errorMessage);
   const errorElement = document.querySelector('.error');
   const errorCloseElement = errorElement.querySelector('.error__button');
-  errorCloseElement.addEventListener('click', closeErrorMessage);
+  errorCloseElement.addEventListener('click', onCloseErrorMessage);
   document.addEventListener('keydown',onDocumentKeydown);
-  errorElement.addEventListener('click',clickOutOfErrorMessage);
+  errorElement.addEventListener('click',onClickOutOfErrorMessage);
 };
 
-export {showSuccessMessage,showErrorMessage,closeErrorMessage,closeSuccessMessage};
+export {showSuccessMessage,showErrorMessage,onCloseErrorMessage as closeErrorMessage,onCloseSuccessMessage as closeSuccessMessage};
