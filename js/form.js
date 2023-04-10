@@ -108,7 +108,7 @@ const onOpenUploadForm = () => {
   }
 };
 
-const onCloseUploadForm = () => {
+const closeUploadForm = () => {
   uploadFormSectionElement.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
@@ -117,6 +117,8 @@ const onCloseUploadForm = () => {
   resetScale();
   resetEffect();
 };
+
+const onCloseUploadForm = () => closeUploadForm();
 
 const isTextInFocus = () =>
   document.activeElement === hashtagFieldElement ||
@@ -135,7 +137,7 @@ function onDocumentKeydown (evt) {
   }
   if (isEscapeKey(evt) && !isTextInFocus()) {
     evt.preventDefault();
-    onCloseUploadForm();
+    closeUploadForm();
   }
 }
 
@@ -157,6 +159,6 @@ const setUserFormSubmit = (onSuccess) => {
     }
   });
 };
-setUserFormSubmit(onCloseUploadForm);
+setUserFormSubmit(closeUploadForm);
 
 export {onDocumentKeydown};

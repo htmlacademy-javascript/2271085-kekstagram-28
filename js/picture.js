@@ -29,7 +29,7 @@ getData()
     }
   );
 
-const onOpenBigPicture = (evt) => {
+const onBigPictureOpen = (evt) => {
   if (!evt.target.closest('[data-id]')){
     return;
   }
@@ -73,26 +73,29 @@ const onOpenBigPicture = (evt) => {
   };
   makeComment(commentsShown);
 
-  const showComment = () => {
+  const onCommentShow = () => {
     commentsShown += COMMENTS_PORTION;
     makeComment(commentsShown);
   };
-  commentLoaderElement.addEventListener('click', showComment);
+  commentLoaderElement.addEventListener('click', onCommentShow);
 };
 
 
-const onCloseBigPicture = () => {
+const onBigPictureClose = () => closeBigPicture();
+
+function closeBigPicture () {
   bigPictureElement.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
-};
+}
+
 
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    onCloseBigPicture();
+    closeBigPicture();
   }
 }
 
-picturesSectionElement.addEventListener('click', onOpenBigPicture);
-bigPictureCancelElement.addEventListener('click',onCloseBigPicture);
+picturesSectionElement.addEventListener('click', onBigPictureOpen);
+bigPictureCancelElement.addEventListener('click',onBigPictureClose);
