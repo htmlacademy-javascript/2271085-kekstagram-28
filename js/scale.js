@@ -14,7 +14,7 @@ const changeScale = (value) => {
   scaleValueElement.value = `${value}%`;
 };
 
-const onSmallerMake = () => {
+const onScaleSmallerClick = () => {
   actualScale -= SCALE_STEP;
   if(actualScale < SCALE_STEP){
     actualScale = SCALE_STEP;
@@ -23,7 +23,7 @@ const onSmallerMake = () => {
   changeScale(actualScale);
 };
 
-const onBiggerMake = () => {
+const onScaleBiggerClick = () => {
   actualScale += SCALE_STEP;
   if(actualScale >= SCALE_MAX){
     actualScale = SCALE_MAX;
@@ -34,7 +34,7 @@ const onBiggerMake = () => {
 
 const resetScale = () => changeScale(SCALE_DEFAULT);
 
-scaleSmallerButtonElement.addEventListener('click', onSmallerMake);
-scaleBiggerButtonElement.addEventListener('click', onBiggerMake);
+scaleSmallerButtonElement.addEventListener('click', onScaleSmallerClick);
+scaleBiggerButtonElement.addEventListener('click', onScaleBiggerClick);
 
 export {resetScale};

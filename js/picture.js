@@ -81,15 +81,14 @@ const onBigPictureOpen = (evt) => {
 };
 
 
-const closeBigPicture = () => {
+const onBigPictureClose = () => closeBigPicture();
+
+function closeBigPicture () {
   bigPictureElement.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
-};
-
-function onBigPictureClose () {
-  closeBigPicture();
 }
+
 
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt)) {
